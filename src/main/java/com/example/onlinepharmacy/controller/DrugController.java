@@ -33,4 +33,22 @@ public class DrugController {
     public List<Drug> search(@RequestParam String q) {
         return drugService.search(q);
     }
+
+    @PostMapping
+    public Drug add(@RequestBody Drug drug) {
+        return drugService.add(drug);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Drug> update(@PathVariable Long id, @RequestBody Drug drug) {
+        return drugService.update(id, drug)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        boolean removed = drugService.delete(id);
+        return removed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 }

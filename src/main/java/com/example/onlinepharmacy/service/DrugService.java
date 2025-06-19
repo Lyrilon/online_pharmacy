@@ -33,4 +33,25 @@ public class DrugService {
                 .filter(d -> d.getName().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
     }
+
+    public Drug add(Drug drug) {
+        long nextId = drugs.stream().mapToLong(Drug::getId).max().orElse(0) + 1;
+        drug.setId(nextId);
+        drugs.add(drug);
+        return drug;
+    }
+
+    public Optional<Drug> update(Long id, Drug updated) {
+        Optional<Drug> existing = findById(id);
+        existing.ifPresent(d -> {
+            d.setName(updated.getName());
+            d.setDescription(updated.getDescription());
+            d.setPrice(updated.getPrice());
+        });
+        return existing;
+    }
+
+    public boolean delete(Long id) {
+        return drugs.removeIf(d -> d.getId().equals(id));
+    }
 }

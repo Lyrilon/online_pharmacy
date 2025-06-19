@@ -17,4 +17,9 @@ public class ChatController {
     public String chat(@RequestBody String question) {
         return chatService.ask(question);
     }
+
+    @GetMapping("/history")
+    public java.util.List<String> history() {
+        return chatService.getHistory();
+    }
 }
